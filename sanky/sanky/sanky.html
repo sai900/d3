@@ -14,7 +14,7 @@
 
 
       function drawChart() {
-        $.get("./sanky.csv", function(csvString) {
+        $.get("https://raw.githubusercontent.com/sai900/d3/master/sanky/sanky/sanky.csv", function(csvString) {
 
       // fetch CSV file using ajax
         var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
