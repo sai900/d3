@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript"></script>
+  </head>
+  <body>
+    <div id="sankey_basic" style="width: 900px; height: 300px;"></div>
+	<script>  
+	  google.charts.load('current', {'packages':['sankey']});
+      google.charts.setOnLoadCallback(drawChart);
+
+
+      function drawChart() {
+        $.get("./sanky.csv", function(csvString) {
+
+      // fetch CSV file using ajax
+        var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+		
+      // after parsing , arrayData is 2-D array holding all the data contained in CSV file
+		var data = new google.visualization.DataTable();
+        data.addColumn('string', 'From');
+        data.addColumn('string', 'To');
+        data.addColumn('number', 'Weight');
+
+	    //console.log(arrayData[2]);
+
+		for (var i=0; i<arrayData.length;i++){
+			//console.log(arrayData[i]);
+			if(arrayData[i][2] >=3){
+			data.addRow(arrayData[i]);
+			}
+		}
+		
+		console.log(data);
+
+        // Sets chart options.
+        var options = {
+          width: 600,
+        };
+
+        // Instantiates and draws our chart, passing in some options.
+        var chart = new google.visualization.Sankey(document.getElementById('sankey_basic'));
+        chart.draw(data, options);
+      });
+	  }
+	  </script>
+  </body>
+</html>
